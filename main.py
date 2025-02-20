@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, Security
 from models import CalificacionCreate, CalificacionResponse, EtiquetaCreate, EtiquetaResponse, EtiquetasPublicacion, PublicacionCreate, PublicacionUpdate, UsuarioCreate, UsuarioLogin, UsuarioResponse, Token
-from crud import assign_tags_to_post, create_calificacion, create_post, create_tag, get_calificacion_promedio, get_post, list_posts, list_tags, update_post, delete_post, create_user, login_user
+from crud import assign_tags_to_post, create_calificacion, create_post, create_tag, get_calificacion_promedio, get_post, get_user_by_id, list_posts, list_tags, update_post, delete_post, create_user, login_user
 from database import connect_to_db, close_db_connection
 from security import get_current_user
 from contextlib import asynccontextmanager
@@ -73,6 +73,15 @@ async def login(usuario: UsuarioLogin):
     if not token:
         raise HTTPException(status_code=401, detail="Credenciales inválidas")
     return {"access_token": token, "token_type": "bearer"}
+
+# Obtener un usuario por ID
+@app.get("/usuarios/{id_usuario}", response_model=UsuarioResponse)
+async def obtener_usuario(id_usuario: int):
+    user = await get_user_by_id(app.state.pool, id_usuario)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    return user  # ✅ Ahora retorna un objeto `UsuarioResponse` correctamente
+
 
 ####################################################################################################
 #Calificaciones

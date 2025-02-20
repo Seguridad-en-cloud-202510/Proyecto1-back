@@ -175,6 +175,16 @@ async def login_user(pool: asyncpg.Pool, usuario: UsuarioLogin):
         return None
     return create_access_token({"sub": usuario.email})  # Token JWT
 
+# Función para obtener un usuario por ID
+async def get_user_by_id(pool: asyncpg.Pool, id_usuario: int):
+    async with pool.acquire() as connection:
+        query = "SELECT id_usuario, nombre, email FROM Usuario WHERE id_usuario = $1;"
+        row = await connection.fetchrow(query, id_usuario)
+
+        if row:
+            return UsuarioResponse(id_usuario=row["id_usuario"], nombre=row["nombre"], email=row["email"])
+        return None
+
 ####################################################################################################
 # Calificaciones
 
