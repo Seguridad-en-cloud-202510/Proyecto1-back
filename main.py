@@ -5,6 +5,8 @@ from database import connect_to_db, close_db_connection
 from security import get_current_user
 from contextlib import asynccontextmanager
 from typing import List
+from fastapi.middleware.cors import CORSMiddleware
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,6 +15,14 @@ async def lifespan(app: FastAPI):
     await close_db_connection(app.state.pool)
 
 app = FastAPI(title="API de Blogs", lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # React frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos los métodos (GET, POST, etc.)
+    allow_headers=["*"],
+)
 
 ####################################################################################################
 #Publicaciones

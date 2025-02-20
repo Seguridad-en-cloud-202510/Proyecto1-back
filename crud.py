@@ -115,7 +115,7 @@ async def list_posts(pool: asyncpg.Pool, skip: int = 0, limit: int = 10):
                     fecha_publicacion=row["fecha_publicacion"],
                     portada=row["portada"],
                     publicado=row["publicado"],
-                    etiquetas=row["etiquetas"] if isinstance(row["etiquetas"], list) else []
+                    etiquetas=json.loads(row["etiquetas"]) if row["etiquetas"] else []
                 ) for row in rows
             ]
         }
