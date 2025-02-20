@@ -14,7 +14,10 @@ load_dotenv()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Configuración del JWT
-SECRET_KEY = os.getenv("SECRET_KEY", "clave_super_secreta")
+SECRET_KEY = os.getenv("SECRET_KEY")  # Sin valor por defecto
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY no está definida en el archivo .env")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
