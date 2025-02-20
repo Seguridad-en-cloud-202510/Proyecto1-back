@@ -80,7 +80,7 @@ async def obtener_usuario(id_usuario: int):
     user = await get_user_by_id(app.state.pool, id_usuario)
     if not user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return user  # ✅ Ahora retorna un objeto `UsuarioResponse` correctamente
+    return user
 
 
 ####################################################################################################
