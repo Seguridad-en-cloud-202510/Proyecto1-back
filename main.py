@@ -21,7 +21,7 @@ app = FastAPI(title="API de Blogs", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Frontend (React)
+    allow_origins=["http://34.16.98.228:5173"],  # Frontend (React)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

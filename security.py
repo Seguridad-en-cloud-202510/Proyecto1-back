@@ -11,9 +11,7 @@ load_dotenv()
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-if not SECRET_KEY:
-    raise ValueError("SECRET_KEY no está definida en el archivo .env")
+SECRET_KEY = "G35sVco7B9r$AkQI5@zU073K6W!0JVqMVE8KGpuS3I5x53S&cq94Vdw7fm$SnNpj5Kl!QgD60cEGx!!cm1*m83q5jjEvED^a5%ixXkSmm2Z8MWCUwManw@cfWh5^8o"
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
