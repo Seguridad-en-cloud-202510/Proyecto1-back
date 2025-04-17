@@ -7,7 +7,7 @@ Se han modificado:
   • La obtención del usuario autenticado, leyendo la cookie "access_token".
 """
 
-from fastapi import FastAPI, HTTPException, Query, Depends, Security, Response, Request
+from fastapi import FastAPI, HTTPException, Query, Depends, Security, Response, Request, status
 from models import (CalificacionCreate, CalificacionResponse, EtiquetaCreate, EtiquetaResponse,
                     EtiquetasPublicacion, PublicacionCreate, PublicacionUpdate, UsuarioCreate, 
                     UsuarioLogin, UsuarioResponse, Token)
@@ -32,7 +32,7 @@ app = FastAPI(title="API de Blogs", lifespan=lifespan)
 # Configuración del middleware CORS para que funcione con cookies
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://34.16.98.228:5173"],  # Frontend (React)
+    allow_origins=["http://35.228.134.177:5173/"],  # Frontend (React)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -156,3 +156,11 @@ async def asignar_etiquetas(id_post: int, etiquetas: List[str], user_id: int = D
 @app.get("/etiquetas/", response_model=List[EtiquetaResponse])
 async def listar_etiquetas():
     return await list_tags(app.state.pool)
+
+@app.get("/health", status_code=status.HTTP_200_OK)
+async def health_check():
+    """
+    Endpoint para verificar la salud de la aplicación.
+    Retorna un JSON simple con el estado "ok".
+    """
+    return {"status": "ok"}
