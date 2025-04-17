@@ -1,9 +1,17 @@
+#!/usr/bin/env python3
+"""
+security.py
+Contiene las funciones de hashing, verificación y manejo de tokens JWT.
+Este archivo se mantiene casi sin cambios, ya que la lógica de creación
+y decodificación del token sigue siendo la misma.
+"""
+
 from passlib.context import CryptContext
 import jwt
 import os
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-from fastapi import Depends, HTTPException, Security
+from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jwt import PyJWTError
 
@@ -18,6 +26,7 @@ if not SECRET_KEY:
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+# Se mantiene para endpoints que requieran OAuth2 en header (si fuera necesario)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/login/")
 
 def hash_password(password: str) -> str:
@@ -38,12 +47,3 @@ def decode_access_token(token: str):
         return payload.get("sub")
     except PyJWTError:
         return None
-
-async def get_current_user(token: str = Security(oauth2_scheme)) -> int:
-    user_id = decode_access_token(token)
-    if not user_id:
-        raise HTTPException(status_code=401, detail="Token inválido o expirado")
-    try:
-        return int(user_id)
-    except ValueError:
-        raise HTTPException(status_code=401, detail="Token corrupto")
