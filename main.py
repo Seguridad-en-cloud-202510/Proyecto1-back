@@ -32,7 +32,7 @@ app = FastAPI(title="API de Blogs", lifespan=lifespan)
 # Configuración del middleware CORS para que funcione con cookies
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://35.228.134.177:5173/"],  # Frontend (React)
+    allow_origins=["http://localhost:5173/", "http://localhost:8080/"],  # Frontend (React)
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
